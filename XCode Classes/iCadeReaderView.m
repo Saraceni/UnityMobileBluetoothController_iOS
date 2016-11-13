@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2011 by Stuart Carnie
+ Copyright (C) 2011 by Rafael Saraceni
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,8 @@
 
 #import "iCadeReaderView.h"
 
-static const char *ON_STATES  = "wdxayhujikol";
-static const char *OFF_STATES = "eczqtrfnmpgv";
+static const char *ON_STATES  = "wadxuhyj";
+static const char *OFF_STATES = "eqcfrtnz";
 
 @interface iCadeReaderView()
 
@@ -43,18 +43,14 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     
-	NSLog(@"iCadeReaderView: Init");
-	
+    NSLog(@"iCadeReaderView: Init");
+    
     return self;
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-	
-	[_delegate release];
-	
-    [super dealloc];
 }
 
 - (void)didEnterBackground {
@@ -65,9 +61,9 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
 - (void)didBecomeActive {
     if (self.active) {
         [self becomeFirstResponder];
-		
-		NSLog(@"iCadeReaderView: becomeFirstResponder");
-	}
+        
+        NSLog(@"iCadeReaderView: becomeFirstResponder");
+    }
 }
 
 - (BOOL)canBecomeFirstResponder { 
@@ -80,7 +76,7 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
     active = value;
     if (active) {
         [self becomeFirstResponder];
-		NSLog(@"iCadeReaderView: becomeFirstResponder");
+        NSLog(@"iCadeReaderView: becomeFirstResponder");
     } else {
         [self resignFirstResponder];
     }
@@ -91,7 +87,7 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
 }
 
 - (void)setDelegate:(id<iCadeEventDelegate>)delegate {
-    _delegate = [delegate retain];
+    _delegate = delegate;
     if (!_delegate) return;
     
     _delegateFlags.stateChanged = [_delegate respondsToSelector:@selector(stateChanged:)];
@@ -109,23 +105,22 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
 - (void)insertText:(NSString *)text {
     
     char ch = [text characterAtIndex:0];
+    NSLog(@"%c", ch);
     char *p = strchr(ON_STATES, ch);
     bool stateChanged = false;
     if (p) {
-        int index = p-ON_STATES;
-        _iCadeState |= (1 << index);
+        _iCadeState = ch;
         stateChanged = true;
         if (_delegateFlags.buttonDown) {
-            [_delegate buttonDown:(1 << index)];
+            [_delegate buttonDown:ch];
         }
     } else {
         p = strchr(OFF_STATES, ch);
         if (p) {
-            int index = p-OFF_STATES;
-            _iCadeState &= ~(1 << index);
+            _iCadeState = ch;
             stateChanged = true;
             if (_delegateFlags.buttonUp) {
-                [_delegate buttonUp:(1 << index)];
+                [_delegate buttonUp:ch];
             }
         }
     }

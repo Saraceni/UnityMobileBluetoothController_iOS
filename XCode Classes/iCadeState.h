@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2011 by Stuart Carnie
+ Copyright (C) 2011 by Rafael Saraceni
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -21,24 +21,23 @@
  */
 
 typedef enum iCadeState {
-    iCadeJoystickNone       = 0x000,
-    iCadeJoystickUp         = 0x001,
-    iCadeJoystickRight      = 0x002,
-    iCadeJoystickDown       = 0x004,
-    iCadeJoystickLeft       = 0x008,
     
-    iCadeJoystickUpRight    = iCadeJoystickUp   | iCadeJoystickRight,
-    iCadeJoystickDownRight  = iCadeJoystickDown | iCadeJoystickRight,
-    iCadeJoystickUpLeft     = iCadeJoystickUp   | iCadeJoystickLeft,
-    iCadeJoystickDownLeft   = iCadeJoystickDown | iCadeJoystickLeft,
+    iCadeJoystickUpPress        = 0x077,
+    iCadeJoystickUpRelease      = 0x065,
+    iCadeJoystickLeftPress      = 0x061,
+    iCadeJoystickLeftRelease    = 0x071,
+    iCadeJoystickRightPress     = 0x064,
+    iCadeJoystickRightRelease   = 0x063,
+    iCadeJoystickDownPress      = 0x078,
+    iCadeJoystickDownRelease    = 0x07A,
+    iCadeJoystickAPress         = 0x075,
+    iCadeJoystickARelease       = 0x066,
+    iCadeJoystickBPress         = 0x068,
+    iCadeJoystickBRelease       = 0x072,
+    iCadeJoystickCPress         = 0x079,
+    iCadeJoystickCRelease       = 0x074,
+    iCadeJoystickDPress         = 0x06A,
+    iCadeJoystickDRelease       = 0x06E
     
-    iCadeButtonA            = 0x010,
-    iCadeButtonB            = 0x020,
-    iCadeButtonC            = 0x040,
-    iCadeButtonD            = 0x080,
-    iCadeButtonE            = 0x100,
-    iCadeButtonF            = 0x200,
-    iCadeButtonG            = 0x400,
-    iCadeButtonH            = 0x800,
     
 } iCadeState;
